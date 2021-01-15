@@ -9,7 +9,10 @@ const initialState = {
         picture: ''
     },
     authenticate: false,
-    authenticating: false
+    authenticating: false,
+    loading: false,
+    error: null,
+    message: ''
 }
 
 export const authReducer = (state = initialState,action)=>{
@@ -27,6 +30,29 @@ export const authReducer = (state = initialState,action)=>{
                     token: action.payload.token,
                     authenticate: true,
                     authenticating: false
+                    }
+        case authConstants.LOGIN_FAILURE:
+            return {
+                    ...state,
+                    user: action.payload.user,
+                    token: action.payload.token,
+                    authenticate: false,
+                    authenticating: false
+                    }
+        case authConstants.LOGOUT_REQUEST:
+            return {
+                    ...state,
+                    loading: true
+                    }
+        case authConstants.LOGOUT_SUCCESS:
+            return {
+                    ...initialState
+                    }
+        case authConstants.LOGOUT_FAILURE:
+            return {
+                    ...state,
+                    loading: false,
+                    error: action.payload.error
                     }
         default:
             return state

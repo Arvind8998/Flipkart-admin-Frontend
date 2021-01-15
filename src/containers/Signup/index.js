@@ -3,9 +3,9 @@ import Layout from "../../components/Layout";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import Input from "../../components/UI/Input/index";
 import { Redirect } from "react-router-dom";
-// import { useSelector, useDispatch } from "react-redux";
-// import { signup } from "../../actions";
+import { signup } from "../../actions/user.actions";
 import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 /**
  * @author
@@ -17,19 +17,19 @@ const Signup = (props) => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-//   const auth = useSelector((state) => state.auth);
-//   const user = useSelector((state) => state.user);
-//   const dispatch = useDispatch();
+  // const [error, setError] = useState("");
+  const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch  ();
 
-//   useEffect(() => {
-//     if (!user.loading) {
-//       setFirstName("");
-//       setLastName("");
-//       setEmail("");
-//       setPassword("");
-//     }
-//   }, [user.loading]);
+  useEffect(() => {
+    if (!user.loading) {
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+    }
+  }, [user.loading]);
 
   const userSignup = (e) => {
     e.preventDefault();
@@ -41,21 +41,21 @@ const Signup = (props) => {
       password,
     };
 
-    // dispatch(signup(user));
+    dispatch(signup(user));
   };
 
-//   if (auth.authenticate) {
-//     return <Redirect to={`/`} />;
-//   }
+  if (auth.authenticate) {
+    return <Redirect to={`/`} />;
+  }
 
-//   if (user.loading) {
-//     return <p>Loading...!</p>;
-//   }
+  if (user.loading) {
+    return <p>Loading...!</p>;
+  }
 
   return (
     <Layout>
       <Container>
-        {/* {user.message} */}
+        {user.message}
         <Row style={{ marginTop: "6em" }}>
           <Col md={{ span: 6, offset: 3 }}>
             <Form onSubmit={userSignup}>

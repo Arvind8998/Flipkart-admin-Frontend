@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../Header';
 import { Container, Row, Col } from 'react-bootstrap'; 
 import { NavLink } from 'react-router-dom';
-// import './style.css';    
+import './style.css';    
 
 /**
 * @author
@@ -13,9 +13,9 @@ const Layout = (props) => {
   return(
     <>
        <Header />
-       {props.children}
-       {/* {
+       {
          props.sidebar ?
+
          <Container fluid>
           <Row>
             <Col md={2} className="sidebar">
@@ -34,7 +34,7 @@ const Layout = (props) => {
         </Container>
         :
         props.children
-       } */}
+       }
         
         
     </>
