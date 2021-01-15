@@ -1,21 +1,32 @@
 import './App.css';
 import {Jumbotron} from 'react-bootstrap'
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 import Layout from './components/Layout/index';
 import Home from './containers/Home';
 import Signin from './containers/Signin';
 import Signup from './containers/Signup';
+import PrivateRoute from './components/HOC/PrivateRoute';
+import { useEffect } from 'react';
+import { isUserLoggedIn } from './actions';
+import { useSelector, useDispatch } from 'react-redux';
 
 function App() {
+  const auth = useSelector(state=>state.auth)
+  const dispatch = useDispatch();
+  
+  useEffect(()=>{
+    if(!auth.authenticate){
+        dispatch(isUserLoggedIn())
+    }
+},[])
+
   return (
     <div className="App">
-      <Router>
         <Switch>
-          <Route path="/" exact component={Home} />
+          <PrivateRoute path="/" exact component={Home} />
           <Route path="/signin" component={Signin} />
           <Route path="/signup" component={Signup} />
         </Switch>
-      </Router>
     </div>
   );
 }

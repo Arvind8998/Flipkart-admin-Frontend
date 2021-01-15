@@ -1,20 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Layout from '../../components/Layout'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { Redirect } from 'react-router-dom';
 import Input from '../../components/UI/Input/index';
+import {login} from '../../actions/index'
+import { useDispatch, useSelector } from 'react-redux';
 
 function Signin(props) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    // const auth = useSelector(state => state.auth);
+    const auth = useSelector(state => state.auth);
 
-    // const dispatch = useDispatch();
-
-    
-
+    const dispatch = useDispatch();
 
     const userLogin = (e) => {
 
@@ -24,19 +23,19 @@ function Signin(props) {
             email, password
         }
 
-        // dispatch(login(user));
+        dispatch(login(user));
     }
 
-    // if(auth.authenticate){
-    //     return <Redirect to={`/`} />
-    // }
+    if(auth.authenticate){
+        return <Redirect to={`/`} />
+    }
     
     return (
         <Layout>
         <Container>
             <Row style={{ marginTop: '6em' }}>
                 <Col md={{span: 6, offset: 3}}>
-                    <Form onSubmit={userLogin}>
+                    <Form onSubmit= {userLogin}>
                         <Input 
                             label="Email"
                             placeholder="Email"
