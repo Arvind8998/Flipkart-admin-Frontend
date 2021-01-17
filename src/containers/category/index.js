@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Layout from '../../components/Layout'
-import { Container, Row, Col, Modal, Button } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllcategory, addCategory } from '../../actions/category.action'
+import { addCategory } from '../../actions/category.action'
 import Input from '../../components/UI/Input'
+import Modal from '../../components/UI/Modal/index';
+
 function Category() {
     const category = useSelector(state=> state.category)
     const [show, setShow] = useState(false);
@@ -13,10 +15,6 @@ function Category() {
     
     const dispatch = useDispatch()
 
-    useEffect(()=>{
-        dispatch(getAllcategory())
-    }, [])
-
     const handleClose = () => {
         const form = new FormData()
 
@@ -24,7 +22,8 @@ function Category() {
         form.append('parentId', parentCategoryId)
         form.append('categoryImage', categoryImage)
         dispatch(addCategory(form))
-
+        setCategoryName('')
+        setparentCategoryId('')
         // const cat = {
         //     categoryImage,
         //     categoryName,
@@ -87,12 +86,11 @@ function Category() {
 
            </Container>
 
-           <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                <Modal.Title>Add New Category</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Input 
+           <Modal
+           show= {show}
+           handleClose = {handleClose}
+           modalTitle= {'Add new Category'}>
+           <Input 
                     value={categoryName}
                     placeholder= {'Category Name'}
                     onChange = {e=>setCategoryName(e.target.value)}
@@ -108,13 +106,7 @@ function Category() {
                        }
                     </select>
                     <input type="file" name="categoryImage" onChange={handleCategoryImage}></input>
-                </Modal.Body>
-                <Modal.Footer>
-                <Button variant="primary" onClick={handleClose}>
-                    Save Changes
-                </Button>
-                </Modal.Footer>
-            </Modal>
+           </Modal>
        </Layout>
     )
 }

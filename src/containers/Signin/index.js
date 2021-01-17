@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Layout from '../../components/Layout'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { Redirect } from 'react-router-dom';
@@ -10,7 +10,6 @@ function Signin(props) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
     const auth = useSelector(state => state.auth);
 
     const dispatch = useDispatch();

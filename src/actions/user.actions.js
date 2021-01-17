@@ -1,4 +1,4 @@
-import { authConstants, userConstants } from "./constants";
+import { userConstants } from "./constants";
 import  axios from "../helpers/axios";
 
 export const signup = (user) => {

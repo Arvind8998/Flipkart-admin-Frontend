@@ -1,7 +1,5 @@
 import './App.css';
-import {Jumbotron} from 'react-bootstrap'
 import {Route, Switch} from 'react-router-dom'
-import Layout from './components/Layout/index';
 import Home from './containers/Home';
 import Signin from './containers/Signin';
 import Signup from './containers/Signup';
@@ -12,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Products from './containers/Products/index';
 import Orders from './containers/Orders';
 import Category from './containers/category';
+import { getInitialData } from './actions/initialData.action';
 
 function App() {
   const auth = useSelector(state=>state.auth)
@@ -21,6 +20,8 @@ function App() {
     if(!auth.authenticate){
         dispatch(isUserLoggedIn())
     }
+    dispatch(getInitialData())
+
 },[])
 
   return (

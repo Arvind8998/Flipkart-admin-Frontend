@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux'
 import { authReducer } from './auth.reducer'
-import productReducer from './product.reducer'
+import {productReducer} from './product.reducer'
 import orderReducer from './order.reducer'
 import {categoryReducer} from './category.reducer'
 
@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
     category: categoryReducer,
     order: orderReducer,
     product: productReducer
-
+    
 })
 
 export default rootReducer
