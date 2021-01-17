@@ -5,6 +5,8 @@ import Modal from '../../components/UI/Modal/index'
 import Input from '../../components/UI/Input'
 import { useSelector, useDispatch } from 'react-redux'
 import { addProduct } from '../../actions/product.action'
+import './style.css'
+import { generatePublicUrl } from '../../urlConfig'
 
 function Products() {
     const [name, setName] =  useState('')
@@ -14,6 +16,8 @@ function Products() {
     const [categoryId, setCategoryId] = useState('');
     const [productPictures, setProductPictures] = useState([])
     const [show, setShow] = useState(false)
+    const [productDetailsModel, setproductDetailsModel] = useState(false)
+    const [productDetails, setProductDetails] = useState(null)
     const category = useSelector(state=> state.category)
     const product = useSelector(state => state.product)
     const dispatch = useDispatch()
@@ -51,34 +55,143 @@ function Products() {
         ])
     }
 
+    const renderAddProductModal = ()=>{
+        return(
+        <Modal 
+            show = {show}
+            handleClose = {handleClose}
+            modalTitle= {'Add new Product'}>
+                <Input 
+                label = "Name"
+                value={name}
+                placeholder= {'Product Name'}
+                onChange = {e=>setName(e.target.value)}
+                />
+
+                <Input 
+                label = "Quantity"
+                value={quantity}
+                placeholder= {'Quantity'}
+                onChange = {e=>setQuantity(e.target.value)}
+                />
+
+                <Input 
+                label = "Price"
+                value={price}
+                placeholder= {'Product Name'}
+                onChange = {e=>setPrice(e.target.value)}
+                />
+
+                <Input 
+                label = "Description"
+                value={description}
+                placeholder= {'Description'}
+                onChange = {e=>setDescription(e.target.value)}
+                />
+                <select 
+                    value={categoryId} 
+                    className="form-control"
+                    onChange={e=> setCategoryId(e.target.value)}>
+                    <option>Select Category</option>
+                    {createCategoryList(category.categories).map(option=>
+                        <option key={option.value} value={option.value} >{option.name}</option>
+                    )
+                }
+                </select>
+                {
+                productPictures.length >0 ? 
+                productPictures.map((pic,index)=>(<div key={index}>{pic.name}</div>)): null
+                }
+                <input type="file" name="productPicture" onChange={handleProductPictures} />
+            </Modal>
+        )}
+
+    const showProductDetailsModal = (product)=>{
+        setProductDetails(product)
+        setproductDetailsModel(true)
+    }
+
     const renderProducts = ()=>{
-        return <Table responsive="sm">
+        return <Table style= {{ fontSize:12}} responsive="sm">
         <thead>
         <tr>
             <th>#</th>
             <th>Name</th>
             <th>Price</th>
             <th>Quantity</th>
-            <th>Description</th>
-            <th>Product Pictures</th>
             <th>Category</th>
         </tr>
         </thead>
         <tbody>
             {product.products.length > 0 ?
             product.products.map(product=>
-                <tr key={product._id}>
+                <tr onClick= {()=> showProductDetailsModal(product)} key={product._id}>
                     <td>2</td>
                     <td>{product.name}</td>
                     <td>{product.price}</td>
                     <td>{product.quantity}</td>
-                    <td>{product.description}</td>
-                    <td>-----</td>
+                    <td>{product.category?.name}</td>
                 </tr> ) : null }
         
         </tbody>
     </Table>
     }
+
+    const handleCloseProductDetailsModal = ()=>{
+        setproductDetailsModel(false)
+    }
+
+    const renderShowProductDetailsModal = ()=>{
+        if(!productDetails){
+            return null
+        }
+        return (
+        <Modal
+        show = {productDetailsModel }
+        handleClose = {handleCloseProductDetailsModal}
+        modalTitle = 'Product Details'
+        size = 'lg'
+        >
+            <Row>
+                <Col md="6">
+                    <label className= "key">Name</label>
+                    <p className="value">{productDetails.name}</p>
+                </Col>
+                <Col md="6">
+                    <label className= "key">Price</label>
+                    <p className="value">{productDetails.price}</p>
+                </Col>
+            </Row>
+            <Row>
+            <Col md="6">
+                    <label className= "key">Quantity</label>
+                    <p className="value">{productDetails.quantity}</p>
+                </Col>
+                <Col md="6">
+                    <label className= "key">Category</label>
+                    <p className="value">{productDetails?.category?.name}</p>
+                </Col>
+            </Row>
+            <Row>
+                <Col md="12">
+                    <label className= "key">Description</label>
+                    <p className="value">{productDetails.description}</p>
+                </Col>
+            </Row>
+            <Row>
+                <Col >
+                    <label>Product Pictures</label>
+                    <div style={{display:"flex", alignItems:"center"}}>
+                        {productDetails.productPictures.map(pic=>
+                            <div className="product__imgContainer">
+                                <img alt="product" src={generatePublicUrl(pic.img)} />
+                            </div>)}
+                    </div>
+                    
+                </Col>
+            </Row>
+        </Modal>
+        )}
 
     return (
         <Layout sidebar>
@@ -93,58 +206,12 @@ function Products() {
                 </Row>
                 <Row>
                     <Col>
-                            {renderProducts()}
+                        {renderProducts()}
                     </Col>
                 </Row>
             </Container>
-
-            <Modal 
-                show = {show}
-                handleClose = {handleClose}
-                modalTitle= {'Add new Product'}>
-                <Input 
-                        label = "Name"
-                        value={name}
-                        placeholder= {'Product Name'}
-                        onChange = {e=>setName(e.target.value)}
-                        />
-
-                        <Input 
-                        label = "Quantity"
-                        value={quantity}
-                        placeholder= {'Quantity'}
-                        onChange = {e=>setQuantity(e.target.value)}
-                        />
-
-                        <Input 
-                        label = "Price"
-                        value={price}
-                        placeholder= {'Product Name'}
-                        onChange = {e=>setPrice(e.target.value)}
-                        />
-
-                        <Input 
-                        label = "Description"
-                        value={description}
-                        placeholder= {'Description'}
-                        onChange = {e=>setDescription(e.target.value)}
-                        />
-                        <select 
-                            value={categoryId} 
-                            className="form-control"
-                            onChange={e=> setCategoryId(e.target.value)}>
-                            <option>Select Category</option>
-                            {createCategoryList(category.categories).map(option=>
-                                <option key={option.value} value={option.value} >{option.name}</option>
-                            )
-                        }
-                        </select>
-                        {
-                        productPictures.length >0 ? 
-                        productPictures.map((pic,index)=>(<div key={index}>{pic.name}</div>)): null
-                        }
-                        <input type="file" name="productPicture" onChange={handleProductPictures} />
-            </Modal>
+            {renderAddProductModal()}
+            {renderShowProductDetailsModal()}
         </Layout>
     )
 }
