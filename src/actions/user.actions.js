@@ -18,7 +18,6 @@ export const signup = (user) => {
         }
         else{
             if(res.status === 400){
-                debugger
                 dispatch({
                     type: userConstants.USER_REGISTER_FAILURE,
                     payload: {error: res.data.error}
