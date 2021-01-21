@@ -1,7 +1,7 @@
 import axios from "../helpers/axios"
 import { categoryConstants } from "./constants"
 
-export const getAllcategory = () => {
+const getAllcategory = () => {
   return async (dispatch) => {
     dispatch({
       type: categoryConstants.GET_ALL_CATEGORIES_REQUEST,
@@ -25,29 +25,60 @@ export const getAllcategory = () => {
 
 export const addCategory = (form) => {
   return async (dispatch) => {
-    dispatch({ type: categoryConstants.ADD_NEW_CATEGORY_REQUEST })
-    const res = await axios.post("/category/create", form)
-    if (res.status === 201) {
-      dispatch({
-        type: categoryConstants.ADD_NEW_CATEGORY_SUCCESS,
-        payload: { category: res.data.category },
-      })
-    } else {
-      dispatch({
-        type: categoryConstants.ADD_NEW_CATEGORY_FAILURE,
-        payload: res.data.error,
-      })
+    try {
+      dispatch({ type: categoryConstants.ADD_NEW_CATEGORY_REQUEST })
+      const res = await axios.post("/category/create", form)
+      if (res.status === 201) {
+        dispatch({
+          type: categoryConstants.ADD_NEW_CATEGORY_SUCCESS,
+          payload: { category: res.data.category },
+        })
+      } else {
+        dispatch({
+          type: categoryConstants.ADD_NEW_CATEGORY_FAILURE,
+          payload: res.data.error,
+        })
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 }
 
 export const updateCategories = (form) => {
   return async (dispatch) => {
+    dispatch({type: categoryConstants.UPDATE_CATEGORIES_REQUEST})
     const res = await axios.post("/category/update", form)
     if (res.status === 200) {
-        return true
+      dispatch({type: categoryConstants.UPDATE_CATEGORIES_SUCCESS})
+      dispatch(getAllcategory())
     } else {
-      console.log(res)
+      const { error} = res
+        dispatch({
+          type: categoryConstants.UPDATE_CATEGORIES_FAILURE,
+          payload: {
+            error
+          }
+        })
+      }
+  }
+}
+
+export const deleteCategories = (ids) => {
+  return async (dispatch) => {
+    const res = await axios.post("/category/delete", {
+      payload: {
+        ids,
+      },
+    })
+    if (res.status === 201) {
+      return true
+    } else {
+      return false
     }
   }
+}
+
+export {
+  getAllcategory
 }
