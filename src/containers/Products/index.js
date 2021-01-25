@@ -59,7 +59,8 @@ function Products() {
         return(
         <Modal 
             show = {show}
-            handleClose = {handleClose}
+            handleClose = {()=> setShow(false)}
+            onSubmit = {handleClose}
             modalTitle= {'Add new Product'}>
                 <Input 
                 label = "Name"

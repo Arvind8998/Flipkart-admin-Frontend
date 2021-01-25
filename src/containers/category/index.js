@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Layout from "../../components/Layout"
 import { Container, Row, Col } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
@@ -38,8 +38,18 @@ function Category() {
   const [deleteCategoryModal, setDeleteCategoryModal] = useState(false)
   const dispatch = useDispatch()
 
+useEffect(()=>{
+  if(!category.loading){
+    setShow(false)
+  }
+},[category.loading])
+
   const handleClose = () => {
     const form = new FormData()
+    if(categoryName === ""){
+      alert('Category Name is required')
+      return
+    }
 
     form.append("name", categoryName)
     form.append("parentId", parentCategoryId)
@@ -70,6 +80,7 @@ function Category() {
         value: category._id,
         name: category.name,
         parentId: category.parentId,
+        type: category.type
       })
       if (category.children.length > 0) {
         createCategoryList(category.children, options)
@@ -167,6 +178,7 @@ function Category() {
         }
       })
     }
+    setDeleteCategoryModal(false)
   }
 
   const renderDeleteCategoryModal = () => {
@@ -175,6 +187,7 @@ function Category() {
         modalTitle="Confirm"
         show={deleteCategoryModal}
         handleClose={() => setDeleteCategoryModal(false)}
+        onSubmit = {handleClose}
         buttons={[
           {
             label: "No",
@@ -248,7 +261,8 @@ function Category() {
 
       <AddCategoryModal
         show={show}
-        handleClose={handleClose}
+        handleClose={()=> setShow(false)}
+        onSubmit = {handleClose}
         modalTitle={"Add New Category"}
         categoryName={categoryName}
         setCategoryName={setCategoryName}
@@ -260,7 +274,8 @@ function Category() {
 
       <UpdateCategoriesModal
         show={updateCategoryModal}
-        handleClose={updateCategoriesForm}
+        handleClose={()=> setUpdateCategoryModal(false)}
+        onSubmit={updateCategoriesForm}
         modalTitle={"Update Categories"}
         size="lg"
         expandedArray={expandedArray}

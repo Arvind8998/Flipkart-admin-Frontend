@@ -23,7 +23,7 @@ const axiosInstance  = axios.create({
         return res
     }, (error)=>{
         console.log(error.response)
-        const {status} = error.response
+        const {status} = error?.response || ''
         if(status === 500 || status === 400){
             sessionStorage.clear()
             store.dispatch({type: authConstants.LOGOUT_SUCCESS} )

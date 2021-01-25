@@ -3,7 +3,7 @@ import { authReducer } from './auth.reducer'
 import {productReducer} from './product.reducer'
 import orderReducer from './order.reducer'
 import {categoryReducer} from './category.reducer'
-
+import {pageReducer } from './page.reducer'
 import { userReducer } from './user.reducer'
 
 const rootReducer = combineReducers({
@@ -11,8 +11,8 @@ const rootReducer = combineReducers({
     user: userReducer,
     category: categoryReducer,
     order: orderReducer,
-    product: productReducer
-    
+    product: productReducer,
+    page: pageReducer
 })
 
 export default rootReducer

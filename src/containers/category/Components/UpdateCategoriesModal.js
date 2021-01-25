@@ -3,7 +3,6 @@ import * as React from "react"
 import Input from "../../../components/UI/Input/index"
 import Modal from "../../../components/UI/Modal/index"
 
-
 const UpdateCategoriesModal = (props) => {
   const {
     show,
@@ -14,11 +13,13 @@ const UpdateCategoriesModal = (props) => {
     checkedArray,
     handleCategoryInput,
     categoryList,
+    onSubmit
   } = props
-  return (  
+  return (
     <Modal
       show={show}
       handleClose={handleClose}
+      onSubmit = {onSubmit} 
       modalTitle={modalTitle}
       size={size}
     >
@@ -109,7 +110,13 @@ const UpdateCategoriesModal = (props) => {
               </select>
             </Col>
             <Col>
-              <select className="form-control">
+              <select
+                className="form-control"
+                value={item.type}
+                onChange={(e) =>
+                  handleCategoryInput("type", e.target.value, index, "checked")
+                }
+              >
                 <option value="">Select type</option>
                 <option value="store">Store</option>
                 <option value="product">Product</option>

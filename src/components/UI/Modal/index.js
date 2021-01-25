@@ -2,7 +2,7 @@ import React from "react"
 import { Modal, Button } from "react-bootstrap"
 
 function NewModal(props) {
-  const { modalTitle, handleClose, show } = props
+  const { modalTitle, handleClose, onSubmit, show } = props
   return (
     <Modal size={props.size} show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -22,7 +22,7 @@ function NewModal(props) {
             {...props}
             style= {{backgroundColor: "#333"}}
             className="btn-sm"
-            onClick={handleClose}
+            onClick={onSubmit}
           >
             Save
           </Button>

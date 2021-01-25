@@ -80,11 +80,17 @@ export const categoryReducer = (state = initialState, action) => {
         loading: false,
       }
       break
-    case categoryConstants.UPDATE_CATEGORIES_REQUEST:
+    case categoryConstants.ADD_NEW_CATEGORY_FAILURE:
       state = {
         ...initialState,
         loading: false,
-        error: action.payload.error,
+        error: action.payload.error
+      }
+      break
+    case categoryConstants.UPDATE_CATEGORIES_REQUEST:
+      state = {
+        ...initialState,
+        loading: true,
       }
       break
     case categoryConstants.UPDATE_CATEGORIES_SUCCESS:
@@ -94,18 +100,32 @@ export const categoryReducer = (state = initialState, action) => {
       }
       break
     case categoryConstants.UPDATE_CATEGORIES_FAILURE:
-        state = {
-            ...state,
-            error: action.payload.error,
-          }
-          break
-    case categoryConstants.ADD_NEW_CATEGORY_FAILURE:
       state = {
-        ...initialState,
+        ...state,
+        error: action.payload.error,
         loading: false,
+      }
+      break
+
+    case categoryConstants.DELETE_CATEGORIES_REQUEST:
+      state = {
+        ...state,
+        loading: true,
+      }
+      break
+    case categoryConstants.DELETE_CATEGORIES_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      }
+      break
+    case categoryConstants.DELETE_CATEGORIES_FAILURE:
+      state = {
+        ...state,
         error: action.payload.error,
       }
       break
+
     default:
       return {
         ...state,
